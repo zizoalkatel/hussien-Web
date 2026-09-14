@@ -1,0 +1,20 @@
+{
+  "name": "hussien-web",
+  "version": "1.0.0",
+  "description": "Coach Hussien Mohamed - Fitness & Sports Performance Specialist Website",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "fitness",
+    "personal-trainer",
+    "strength-conditioning"
+  ],
+  "author": "Hussien Mohamed Hussien",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
