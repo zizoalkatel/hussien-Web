@@ -1324,3 +1324,173 @@ footer span {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   TRAINING PERCENTAGE CALCULATOR — CARD GRID DESIGN
+   ============================================================ */
+
+/* Filter chips specific to training % panel */
+.tpct-chip {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-line);
+  background: rgba(255,255,255,0.04);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+}
+.tpct-chip:hover {
+  border-color: var(--accent-red);
+  color: var(--text-main);
+}
+.tpct-chip.active {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255,46,77,0.4);
+}
+
+/* The responsive cards grid */
+.tpct-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* Individual intensity zone card */
+.tpct-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+  padding: 18px 20px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  cursor: default;
+}
+.tpct-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+}
+.tpct-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  border-color: rgba(255,255,255,0.14);
+}
+
+/* Color-coded zone accents */
+.tpct-card[data-zone="max"]::before    { background: #b91c1c; }
+.tpct-card[data-zone="heavy"]::before  { background: #c2410c; }
+.tpct-card[data-zone="hyper"]::before  { background: #0369a1; }
+.tpct-card[data-zone="volume"]::before { background: #15803d; }
+.tpct-card[data-zone="speed"]::before  { background: #475569; }
+
+.tpct-card[data-zone="max"]:hover   { box-shadow: 0 8px 28px rgba(185,28,28,0.25); border-color: rgba(185,28,28,0.4); }
+.tpct-card[data-zone="heavy"]:hover { box-shadow: 0 8px 28px rgba(194,65,12,0.25); border-color: rgba(194,65,12,0.4); }
+.tpct-card[data-zone="hyper"]:hover { box-shadow: 0 8px 28px rgba(3,105,161,0.25); border-color: rgba(3,105,161,0.4); }
+.tpct-card[data-zone="volume"]:hover { box-shadow: 0 8px 28px rgba(21,128,61,0.25); border-color: rgba(21,128,61,0.4); }
+
+/* Card header row */
+.tpct-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+.tpct-card-pct {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.tpct-card[data-zone="max"]    .tpct-card-pct { color: #f87171; }
+.tpct-card[data-zone="heavy"]  .tpct-card-pct { color: #fb923c; }
+.tpct-card[data-zone="hyper"]  .tpct-card-pct { color: #38bdf8; }
+.tpct-card[data-zone="volume"] .tpct-card-pct { color: #4ade80; }
+.tpct-card[data-zone="speed"]  .tpct-card-pct { color: var(--text-muted); }
+
+.tpct-card-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.tpct-card[data-zone="max"]    .tpct-card-badge { background: rgba(185,28,28,0.2);   color: #f87171; }
+.tpct-card[data-zone="heavy"]  .tpct-card-badge { background: rgba(194,65,12,0.2);   color: #fb923c; }
+.tpct-card[data-zone="hyper"]  .tpct-card-badge { background: rgba(3,105,161,0.2);   color: #38bdf8; }
+.tpct-card[data-zone="volume"] .tpct-card-badge { background: rgba(21,128,61,0.2);   color: #4ade80; }
+.tpct-card[data-zone="speed"]  .tpct-card-badge { background: rgba(71,85,105,0.2);   color: #94a3b8; }
+
+/* Main load weight display */
+.tpct-card-weight {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+/* Sub-info rows */
+.tpct-card-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.tpct-card-info strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* Animated fill bar */
+.tpct-bar-track {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.07);
+  overflow: hidden;
+}
+.tpct-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  width: 0;
+  transition: width 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.tpct-card[data-zone="max"]    .tpct-bar-fill { background: linear-gradient(90deg, #7f1d1d, #f87171); }
+.tpct-card[data-zone="heavy"]  .tpct-bar-fill { background: linear-gradient(90deg, #7c2d12, #fb923c); }
+.tpct-card[data-zone="hyper"]  .tpct-bar-fill { background: linear-gradient(90deg, #0c4a6e, #38bdf8); }
+.tpct-card[data-zone="volume"] .tpct-bar-fill { background: linear-gradient(90deg, #14532d, #4ade80); }
+.tpct-card[data-zone="speed"]  .tpct-bar-fill { background: linear-gradient(90deg, #1e293b, #94a3b8); }
+
+/* RPE tag */
+.tpct-rpe-tag {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .tpct-cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .tpct-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

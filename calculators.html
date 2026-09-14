@@ -72,7 +72,8 @@
       <!-- Tab Buttons -->
       <div class="toolkit-tabs reveal" style="margin-top:40px; margin-bottom:30px;">
         <button class="tab-btn active" data-target="panel-1rm">1-Rep Max (1RM) Table</button>
-        <button class="tab-btn" data-target="panel-pct">Training Load %</button>
+        <button class="tab-btn" data-target="panel-pct">Training Load &amp; Relative Strength</button>
+        <button class="tab-btn" data-target="panel-trainingpct">Training % Calculator</button>
         <button class="tab-btn" data-target="panel-vo2">VO2 Max Estimator</button>
         <button class="tab-btn" data-target="panel-hr">Heart Rate Zones</button>
         <button class="tab-btn" data-target="panel-burn">Calories Burned</button>
@@ -126,91 +127,343 @@
         </div>
       </div>
 
-      <!-- PANEL 2: TRAINING PERCENTAGE CALCULATOR (ENHANCED) -->
+      <!-- PANEL 2: RELATIVE STRENGTH & TRAINING LOAD (GYM & CALISTHENICS SUITE) -->
       <div class="glass-card calc-panel reveal" id="panel-pct">
-        <div style="margin-bottom:20px; text-align:center;">
-          <h3 style="font-family:var(--font-heading); font-size:1.4rem;">Training Percentage Load Estimator</h3>
-          <p style="color:var(--text-muted); font-size:0.9rem;">Calculate exact working weight for any target intensity percentage, reps, and training adaptation zone.</p>
+        <div style="margin-bottom:24px; text-align:center;">
+          <h3 style="font-family:var(--font-heading); font-size:1.45rem;">Relative Strength &amp; Training Load Standards</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">
+            Calculate your 1-Rep Max, strength-to-bodyweight ratio, and athlete classification across dozens of gym and calisthenics exercises.
+          </p>
         </div>
 
-        <div class="calc-form-grid" style="grid-template-columns: 1fr 1fr;">
+        <!-- Unit & Profile Control Bar -->
+        <div class="strength-control-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:0.85rem; color:var(--text-muted);">Units:</span>
+            <div class="unit-toggle-group" style="display:inline-flex; background:rgba(255,255,255,0.06); border-radius:20px; padding:3px; border:1px solid var(--border-line);">
+              <button type="button" class="unit-btn active" data-unit="kg" id="unit-kg-btn" style="padding:4px 14px; border-radius:16px; border:none; background:var(--accent-red); color:#fff; font-size:0.8rem; font-weight:700; cursor:pointer;">KG</button>
+              <button type="button" class="unit-btn" data-unit="lb" id="unit-lb-btn" style="padding:4px 14px; border-radius:16px; border:none; background:transparent; color:var(--text-muted); font-size:0.8rem; font-weight:700; cursor:pointer;">LB</button>
+            </div>
+          </div>
+
+          <!-- Movement Category Filter Chips -->
+          <div class="exercise-filter-chips" style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="chip-btn active ex-filter-btn" data-filter="all" style="padding:5px 12px; font-size:0.8rem;">All Movements</button>
+            <button type="button" class="chip-btn ex-filter-btn" data-filter="barbell" style="padding:5px 12px; font-size:0.8rem;">Barbell</button>
+            <button type="button" class="chip-btn ex-filter-btn" data-filter="dumbbell" style="padding:5px 12px; font-size:0.8rem;">Dumbbell &amp; Machine</button>
+            <button type="button" class="chip-btn ex-filter-btn" data-filter="calisthenics" style="padding:5px 12px; font-size:0.8rem;">Calisthenics</button>
+          </div>
+        </div>
+
+        <!-- Lifter Biometrics Grid -->
+        <div class="calc-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
           <div class="form-group">
-            <label for="pct-1rm">Known 1-Rep Max (1RM in kg)</label>
-            <input type="number" id="pct-1rm" class="form-control" value="120" min="1" max="500">
+            <label for="strength-gender">Gender</label>
+            <select id="strength-gender" class="form-control">
+              <option value="male" selected>Male</option>
+              <option value="female">Female</option>
+            </select>
           </div>
 
           <div class="form-group">
-            <label for="pct-target">Target Percentage (%)</label>
-            <input type="number" id="pct-target" class="form-control" value="75" min="30" max="120" step="0.5">
+            <label for="strength-age">Age (Years)</label>
+            <input type="number" id="strength-age" class="form-control" value="24" min="14" max="90">
+          </div>
+
+          <div class="form-group">
+            <label for="strength-bodyweight">Bodyweight (<span class="unit-label">kg</span>)</label>
+            <input type="number" id="strength-bodyweight" class="form-control" value="80" min="30" max="300" step="0.5">
           </div>
         </div>
 
-        <!-- Quick Percentage Preset Buttons -->
-        <div class="quick-pct-presets" style="margin-bottom:20px;">
-          <span style="font-size:0.85rem; color:var(--text-muted); display:block; margin-bottom:8px;">Quick Intensity Selectors:</span>
-          <div class="pct-btn-group" style="display:flex; flex-wrap:wrap; gap:8px;">
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="50">50%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="60">60%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="65">65%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="70">70%</button>
-            <button type="button" class="chip-btn pct-quick-btn active" data-pct="75">75%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="80">80%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="85">85%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="90">90%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="95">95%</button>
-            <button type="button" class="chip-btn pct-quick-btn" data-pct="100">100%</button>
+        <!-- Exercise & Lift Details Grid -->
+        <div class="calc-form-grid" style="grid-template-columns: 2fr 1fr 1fr; margin-top:16px;">
+          <div class="form-group">
+            <label for="strength-exercise">Exercise Movement</label>
+            <select id="strength-exercise" class="form-control">
+              <optgroup label="Barbell &amp; Heavy Compound" data-category="barbell">
+                <option value="bench-press" selected>Bench Press (Barbell)</option>
+                <option value="squat">Back Squat (Barbell)</option>
+                <option value="deadlift">Conventional Deadlift</option>
+                <option value="sumo-deadlift">Sumo Deadlift</option>
+                <option value="overhead-press">Overhead Press (OHP / Military)</option>
+                <option value="barbell-row">Barbell Bent-Over Row</option>
+                <option value="incline-bench">Incline Barbell Bench Press</option>
+                <option value="romanian-deadlift">Romanian Deadlift (RDL)</option>
+                <option value="front-squat">Front Squat</option>
+                <option value="close-grip-bench">Close-Grip Bench Press</option>
+                <option value="hip-thrust">Barbell Hip Thrust</option>
+                <option value="clean-and-jerk">Clean and Jerk</option>
+                <option value="snatch">Snatch</option>
+              </optgroup>
+
+              <optgroup label="Dumbbells &amp; Gym Machines" data-category="dumbbell">
+                <option value="incline-db-press">Incline Dumbbell Bench Press</option>
+                <option value="flat-db-press">Flat Dumbbell Bench Press</option>
+                <option value="db-shoulder-press">Seated Dumbbell Shoulder Press</option>
+                <option value="db-curl">Dumbbell Bicep Curl</option>
+                <option value="db-lateral-raise">Dumbbell Lateral Raise</option>
+                <option value="lat-pulldown">Lat Pulldown (Cable)</option>
+                <option value="cable-row">Seated Cable Row</option>
+                <option value="leg-press">Leg Press (Sled)</option>
+                <option value="leg-extension">Leg Extension Machine</option>
+                <option value="leg-curl">Lying Leg Curl</option>
+                <option value="tricep-pushdown">Tricep Rope Pushdown</option>
+              </optgroup>
+
+              <optgroup label="Calisthenics &amp; Bodyweight" data-category="calisthenics">
+                <option value="pull-ups">Pull-ups (Bodyweight / Added Weight)</option>
+                <option value="chin-ups">Chin-ups</option>
+                <option value="dips">Parallel Bar Dips</option>
+                <option value="push-ups">Push-ups (Standard / Weighted)</option>
+                <option value="diamond-pushups">Diamond Push-ups</option>
+                <option value="ring-dips">Gymnastic Ring Dips</option>
+                <option value="inverted-rows">Inverted Bodyweight Rows</option>
+                <option value="handstand-pushups">Handstand Push-ups (HSPU)</option>
+                <option value="pike-pushups">Pike Push-ups</option>
+                <option value="muscle-ups">Bar Muscle-ups</option>
+                <option value="ring-muscle-ups">Ring Muscle-ups</option>
+                <option value="pistol-squats">Pistol Squats (Single Leg)</option>
+                <option value="toes-to-bar">Hanging Leg Raises / Toes-to-Bar</option>
+                <option value="dragon-flags">Dragon Flags</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="strength-lift-weight" id="strength-weight-label">Lift Weight (<span class="unit-label">kg</span>)</label>
+            <input type="number" id="strength-lift-weight" class="form-control" value="85" min="0" max="600" step="0.5">
+            <span id="calisthenics-hint" style="display:none; font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Enter added weight on belt (0 = bodyweight).</span>
+          </div>
+
+          <div class="form-group">
+            <label for="strength-reps">Reps Performed</label>
+            <input type="number" id="strength-reps" class="form-control" value="5" min="1" max="50">
           </div>
         </div>
 
-        <button class="btn btn-primary" id="calc-pct-btn" style="width:100%; margin-bottom:24px;">Calculate Training Load</button>
+        <button class="btn btn-primary" id="calc-strength-btn" style="width:100%; margin-top:20px; margin-bottom:24px;">
+          Calculate Relative Strength &amp; Training Load
+        </button>
 
-        <div class="calc-results">
-          <div class="res-box" style="text-align:center; margin-bottom:24px; padding:24px;">
-            <div class="lbl" id="res-pct-lbl">75% of 120 kg</div>
-            <div class="val" id="res-pct-weight" style="font-size:2.5rem; color:var(--accent-red);">90.0 kg</div>
-            <div id="res-pct-adaptation" style="color:var(--text-muted); font-size:0.95rem; margin-top:8px;">Hypertrophy &amp; Muscular Development (8–10 Reps, RPE ~8)</div>
-          </div>
-
-          <!-- Training Adaptation Zones Breakdown -->
-          <div class="training-zones-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:24px;">
-            <div class="zone-pill-card" data-zone="strength" style="background:rgba(255,46,77,0.08); border:1px solid rgba(255,46,77,0.25); border-radius:10px; padding:14px;">
-              <div style="font-weight:700; color:var(--accent-red); margin-bottom:4px;">Max Strength (85%–100%)</div>
-              <div style="font-size:0.85rem; color:var(--text-main); margin-bottom:4px;">1–5 Reps · RPE 8.5–10</div>
-              <div style="font-size:0.8rem; color:var(--text-muted);">Neural drive &amp; motor unit recruitment</div>
+        <div class="calc-results" id="strength-results-section">
+          <!-- 4 Core Metrics Row -->
+          <div class="res-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom:24px;">
+            <div class="res-box">
+              <div class="val" id="res-calc-1rm" style="color:var(--accent-red); font-size:1.9rem;">98.6 kg</div>
+              <div class="lbl">Estimated 1-Rep Max (1RM)</div>
             </div>
-            <div class="zone-pill-card" data-zone="hypertrophy" style="background:rgba(255,255,255,0.04); border:1px solid var(--border-line); border-radius:10px; padding:14px;">
-              <div style="font-weight:700; color:var(--text-main); margin-bottom:4px;">Hypertrophy (70%–85%)</div>
-              <div style="font-size:0.85rem; color:var(--text-main); margin-bottom:4px;">6–12 Reps · RPE 7.5–9</div>
-              <div style="font-size:0.8rem; color:var(--text-muted);">Muscle growth &amp; mechanical tension</div>
+            <div class="res-box">
+              <div class="val" id="res-relative-ratio" style="color:#38bdf8; font-size:1.9rem;">1.23x</div>
+              <div class="lbl">Strength-to-Bodyweight Ratio</div>
             </div>
-            <div class="zone-pill-card" data-zone="power" style="background:rgba(255,255,255,0.04); border:1px solid var(--border-line); border-radius:10px; padding:14px;">
-              <div style="font-weight:700; color:var(--text-main); margin-bottom:4px;">Power &amp; Speed (50%–70%)</div>
-              <div style="font-size:0.85rem; color:var(--text-main); margin-bottom:4px;">3–5 Explosive Reps · Max Speed</div>
-              <div style="font-size:0.8rem; color:var(--text-muted);">Rate of Force Development (RFD)</div>
+            <div class="res-box">
+              <div class="val" id="res-strength-tier" style="color:#facc15; font-size:1.9rem;">Intermediate</div>
+              <div class="lbl">Strength Classification</div>
             </div>
-            <div class="zone-pill-card" data-zone="endurance" style="background:rgba(255,255,255,0.04); border:1px solid var(--border-line); border-radius:10px; padding:14px;">
-              <div style="font-weight:700; color:var(--text-main); margin-bottom:4px;">Endurance &amp; Deload (50%–65%)</div>
-              <div style="font-size:0.85rem; color:var(--text-main); margin-bottom:4px;">12–20+ Reps · RPE 6–7.5</div>
-              <div style="font-size:0.8rem; color:var(--text-muted);">Metabolic conditioning &amp; recovery</div>
+            <div class="res-box">
+              <div class="val" id="res-percentile" style="font-size:1.9rem;">Top 35%</div>
+              <div class="lbl">Weight Bracket Percentile</div>
             </div>
           </div>
 
-          <h4 style="font-family:var(--font-heading); font-size:1.1rem; color:var(--text-main); margin-bottom:12px;">Full Training Load Percentage Matrix:</h4>
+          <!-- VISUAL RELATIVE STRENGTH METER (5 TIERS) -->
+          <div class="strength-meter-container" style="background:rgba(255,255,255,0.03); border:1px solid var(--border-line); border-radius:var(--radius-md); padding:20px; margin-bottom:24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+              <span style="font-size:0.9rem; font-weight:700; color:var(--text-main);">Athlete Relative Strength Meter</span>
+              <span id="strength-meter-status" style="font-size:0.85rem; color:var(--accent-red); font-weight:600;">Intermediate Lifter</span>
+            </div>
+
+            <!-- The Tier Bar -->
+            <div class="strength-meter-bar" style="position:relative; height:12px; background:rgba(255,255,255,0.08); border-radius:6px; overflow:hidden; display:flex; margin-bottom:12px;">
+              <div class="meter-segment" style="flex:1; background:#475569; border-right:1px solid rgba(0,0,0,0.5);" title="Beginner"></div>
+              <div class="meter-segment" style="flex:1; background:#0284c7; border-right:1px solid rgba(0,0,0,0.5);" title="Novice"></div>
+              <div class="meter-segment" style="flex:1; background:#16a34a; border-right:1px solid rgba(0,0,0,0.5);" title="Intermediate"></div>
+              <div class="meter-segment" style="flex:1; background:#ca8a04; border-right:1px solid rgba(0,0,0,0.5);" title="Advanced"></div>
+              <div class="meter-segment" style="flex:1; background:var(--accent-red);" title="Elite"></div>
+            </div>
+
+            <!-- Active Indicator fill track -->
+            <div style="position:relative; width:100%; height:4px; margin-bottom:14px;">
+              <div id="meter-pointer" style="position:absolute; top:-16px; transform:translateX(-50%); width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid var(--accent-red); transition:left 0.5s ease; left:52%;"></div>
+            </div>
+
+            <!-- 5 Tiers Labels & Target Weights -->
+            <div class="meter-tiers-grid" style="display:grid; grid-template-columns:repeat(5, 1fr); text-align:center; font-size:0.75rem; color:var(--text-muted); gap:4px;">
+              <div>
+                <strong style="display:block; color:var(--text-main);">Beginner</strong>
+                <span id="tier-val-beginner">&lt; 65 kg</span>
+              </div>
+              <div>
+                <strong style="display:block; color:#38bdf8;">Novice</strong>
+                <span id="tier-val-novice">80 kg</span>
+              </div>
+              <div>
+                <strong style="display:block; color:#4ade80;">Intermediate</strong>
+                <span id="tier-val-intermediate">100 kg</span>
+              </div>
+              <div>
+                <strong style="display:block; color:#facc15;">Advanced</strong>
+                <span id="tier-val-advanced">130 kg</span>
+              </div>
+              <div>
+                <strong style="display:block; color:var(--accent-red);">Elite</strong>
+                <span id="tier-val-elite">160+ kg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tailored Training Load Matrix for this specific exercise -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+            <h4 style="font-family:var(--font-heading); font-size:1.15rem; color:var(--text-main); margin:0;">
+              Exercise-Specific Training Load Matrix:
+            </h4>
+            <span id="matrix-exercise-title" style="font-size:0.85rem; color:var(--accent-red); font-weight:700;">Bench Press (Barbell)</span>
+          </div>
+
           <div class="rm-table-wrapper">
             <table class="rm-table">
               <thead>
                 <tr>
                   <th>Intensity %</th>
-                  <th>Calculated Weight</th>
-                  <th>Estimated Reps</th>
-                  <th>Training Stimulus</th>
+                  <th>Working Weight</th>
+                  <th>Target Rep Range</th>
+                  <th>Training Stimulus &amp; RPE</th>
                 </tr>
               </thead>
-              <tbody id="pct-table-body">
-                <!-- Dynamically generated 100% to 50% -->
+              <tbody id="strength-matrix-body">
+                <!-- Dynamically generated from 100% down to 50% -->
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2B: TRAINING PERCENTAGE CALCULATOR (NEW DESIGN) -->
+      <div class="glass-card calc-panel reveal" id="panel-trainingpct">
+        <div style="margin-bottom:24px; text-align:center;">
+          <h3 style="font-family:var(--font-heading); font-size:1.45rem;">Training Percentage Calculator</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem;">
+            Enter your 1-Rep Max for any gym or calisthenics exercise — get instant training loads displayed as interactive intensity cards.
+          </p>
+        </div>
+
+        <!-- Exercise Category Filter -->
+        <div class="tpct-filter-row" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; justify-content:center;">
+          <button type="button" class="tpct-chip active" data-tpct-filter="all">All Exercises</button>
+          <button type="button" class="tpct-chip" data-tpct-filter="barbell">Barbell</button>
+          <button type="button" class="tpct-chip" data-tpct-filter="dumbbell">Dumbbell &amp; Machine</button>
+          <button type="button" class="tpct-chip" data-tpct-filter="calisthenics">Calisthenics</button>
+          <button type="button" class="tpct-chip" data-tpct-filter="cardio">Cardio &amp; Functional</button>
+        </div>
+
+        <!-- Inputs Row -->
+        <div class="calc-form-grid" style="grid-template-columns: 2fr 1fr 1fr; margin-bottom:20px;">
+          <div class="form-group">
+            <label for="tpct-exercise">Select Exercise</label>
+            <select id="tpct-exercise" class="form-control">
+              <optgroup label="Barbell Compound" data-tpct-cat="barbell">
+                <option value="Bench Press|0" data-cat="barbell">Bench Press (Barbell)</option>
+                <option value="Back Squat|0" data-cat="barbell">Back Squat</option>
+                <option value="Conventional Deadlift|0" data-cat="barbell">Conventional Deadlift</option>
+                <option value="Sumo Deadlift|0" data-cat="barbell">Sumo Deadlift</option>
+                <option value="Overhead Press|0" data-cat="barbell">Overhead Press (OHP)</option>
+                <option value="Barbell Row|0" data-cat="barbell">Barbell Bent-Over Row</option>
+                <option value="Incline Bench Press|0" data-cat="barbell">Incline Bench Press</option>
+                <option value="Romanian Deadlift|0" data-cat="barbell">Romanian Deadlift (RDL)</option>
+                <option value="Front Squat|0" data-cat="barbell">Front Squat</option>
+                <option value="Close-Grip Bench|0" data-cat="barbell">Close-Grip Bench Press</option>
+                <option value="Barbell Hip Thrust|0" data-cat="barbell">Barbell Hip Thrust</option>
+                <option value="Clean and Jerk|0" data-cat="barbell">Clean and Jerk</option>
+                <option value="Snatch|0" data-cat="barbell">Snatch</option>
+                <option value="Barbell Lunge|0" data-cat="barbell">Barbell Lunge</option>
+                <option value="Good Morning|0" data-cat="barbell">Good Morning</option>
+                <option value="Barbell Shrug|0" data-cat="barbell">Barbell Shrug</option>
+                <option value="Zercher Squat|0" data-cat="barbell">Zercher Squat</option>
+              </optgroup>
+              <optgroup label="Dumbbell &amp; Machine" data-tpct-cat="dumbbell">
+                <option value="Incline DB Press|0" data-cat="dumbbell">Incline Dumbbell Press</option>
+                <option value="Flat DB Press|0" data-cat="dumbbell">Flat Dumbbell Bench Press</option>
+                <option value="DB Shoulder Press|0" data-cat="dumbbell">Seated DB Shoulder Press</option>
+                <option value="DB Bicep Curl|0" data-cat="dumbbell">Dumbbell Bicep Curl</option>
+                <option value="DB Lateral Raise|0" data-cat="dumbbell">Dumbbell Lateral Raise</option>
+                <option value="Lat Pulldown|0" data-cat="dumbbell">Lat Pulldown (Cable)</option>
+                <option value="Seated Cable Row|0" data-cat="dumbbell">Seated Cable Row</option>
+                <option value="Leg Press|0" data-cat="dumbbell">Leg Press (Sled)</option>
+                <option value="Leg Extension|0" data-cat="dumbbell">Leg Extension Machine</option>
+                <option value="Lying Leg Curl|0" data-cat="dumbbell">Lying Leg Curl</option>
+                <option value="Tricep Pushdown|0" data-cat="dumbbell">Tricep Rope Pushdown</option>
+                <option value="Cable Fly|0" data-cat="dumbbell">Cable Chest Fly</option>
+                <option value="Hammer Curl|0" data-cat="dumbbell">Hammer Curl</option>
+                <option value="DB Row|0" data-cat="dumbbell">Single-Arm DB Row</option>
+                <option value="Pec Deck|0" data-cat="dumbbell">Pec Deck / Machine Fly</option>
+                <option value="Smith Machine Squat|0" data-cat="dumbbell">Smith Machine Squat</option>
+              </optgroup>
+              <optgroup label="Calisthenics &amp; Bodyweight" data-tpct-cat="calisthenics">
+                <option value="Pull-ups|1" data-cat="calisthenics">Pull-ups (Added Weight)</option>
+                <option value="Chin-ups|1" data-cat="calisthenics">Chin-ups (Added Weight)</option>
+                <option value="Parallel Bar Dips|1" data-cat="calisthenics">Parallel Bar Dips</option>
+                <option value="Ring Dips|1" data-cat="calisthenics">Gymnastic Ring Dips</option>
+                <option value="Push-ups|1" data-cat="calisthenics">Push-ups (Weighted)</option>
+                <option value="Diamond Push-ups|1" data-cat="calisthenics">Diamond Push-ups</option>
+                <option value="Handstand Push-ups|1" data-cat="calisthenics">Handstand Push-ups (HSPU)</option>
+                <option value="Bar Muscle-ups|1" data-cat="calisthenics">Bar Muscle-ups</option>
+                <option value="Ring Muscle-ups|1" data-cat="calisthenics">Ring Muscle-ups</option>
+                <option value="Pistol Squats|1" data-cat="calisthenics">Pistol Squats</option>
+                <option value="Toes-to-Bar|1" data-cat="calisthenics">Toes-to-Bar / L-Hang</option>
+                <option value="Dragon Flags|1" data-cat="calisthenics">Dragon Flags</option>
+                <option value="Front Lever|1" data-cat="calisthenics">Front Lever Hold</option>
+                <option value="Back Lever|1" data-cat="calisthenics">Back Lever Hold</option>
+                <option value="Inverted Rows|1" data-cat="calisthenics">Inverted Bodyweight Rows</option>
+                <option value="Pike Push-ups|1" data-cat="calisthenics">Pike Push-ups</option>
+              </optgroup>
+              <optgroup label="Cardio &amp; Functional" data-tpct-cat="cardio">
+                <option value="Kettlebell Swing|0" data-cat="cardio">Kettlebell Swing</option>
+                <option value="Kettlebell Clean &amp; Press|0" data-cat="cardio">Kettlebell Clean &amp; Press</option>
+                <option value="Med Ball Slam|0" data-cat="cardio">Med Ball Slam</option>
+                <option value="Battle Rope|0" data-cat="cardio">Battle Rope (Load Estimate)</option>
+                <option value="Sled Push|0" data-cat="cardio">Sled Push (kg on Sled)</option>
+                <option value="Farmer Carry|0" data-cat="cardio">Farmer Carry (per Hand)</option>
+                <option value="Box Jump|0" data-cat="cardio">Box Jump (Height)</option>
+                <option value="Power Clean|0" data-cat="cardio">Power Clean</option>
+                <option value="Push Press|0" data-cat="cardio">Push Press (Barbell)</option>
+                <option value="Thruster|0" data-cat="cardio">Thruster (Barbell/DB)</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tpct-1rm">Your 1-Rep Max (kg)</label>
+            <input type="number" id="tpct-1rm" class="form-control" value="100" min="1" max="1000" step="0.5">
+          </div>
+          <div class="form-group">
+            <label for="tpct-unit">Display Unit</label>
+            <select id="tpct-unit" class="form-control">
+              <option value="kg" selected>Kilograms (kg)</option>
+              <option value="lb">Pounds (lb)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live calculation trigger -->
+        <div style="text-align:center; margin-bottom:28px;">
+          <button class="btn btn-primary" id="calc-tpct-btn" style="min-width:260px;">Generate Training Loads</button>
+        </div>
+
+        <!-- Results: Exercise Name Display -->
+        <div id="tpct-exercise-title" style="font-family:var(--font-heading); font-size:1.1rem; color:var(--accent-red); font-weight:800; text-align:center; margin-bottom:18px; letter-spacing:0.03em;">Bench Press (Barbell) — 1RM: 100 kg</div>
+
+        <!-- Intensity Zone Cards Grid -->
+        <div id="tpct-cards-grid" class="tpct-cards-grid">
+          <!-- Dynamically populated by JS -->
+        </div>
+
+        <!-- Zone Legend -->
+        <div class="tpct-legend" style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:24px; font-size:0.8rem;">
+          <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:3px; background:#b91c1c; display:inline-block;"></span>Max Strength (90–100%)</span>
+          <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:3px; background:#c2410c; display:inline-block;"></span>Heavy (80–89%)</span>
+          <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:3px; background:#0369a1; display:inline-block;"></span>Hypertrophy (70–79%)</span>
+          <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:3px; background:#15803d; display:inline-block;"></span>Volume (60–69%)</span>
+          <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:3px; background:#475569; display:inline-block;"></span>Warm-up / Speed (≤59%)</span>
         </div>
       </div>
 
